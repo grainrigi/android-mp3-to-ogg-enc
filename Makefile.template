@@ -1,0 +1,25 @@
+
+ARCH="arm"
+
+ABI=${ARCH}
+TRIPLE_ARCH=${ARCH}
+SYSROOT_ARCH=${ARCH}
+STL_ARCH=${ARCH}
+NDK_DIR=Set the path to ndk-bundle
+TOOLCHAIN="${NDK_DIR}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64"
+SYSROOT="${NDK_DIR}/platforms/android-19/arch-${SYSROOT_ARCH}"
+STL="${NDK_DIR}/sources/cxx-stl/gnu-libstdc++/4.9"
+
+CC="${TOOLCHAIN}/bin/arm-linux-androideabi-gcc-4.9.x"
+CXX="${TOOLCHAIN}/bin/arm-linux-androideabi-g++"
+CFLAGS=-O2 -isystem ${TOOLCHAIN}/lib/gcc/include --sysroot=${SYSROOT} -isystem ${SYSROOT}/usr/include -march=armv7-a -mthumb
+CFLAGSARB=-I include#Set your optional CFLAGS
+CXXFLAGSARB=-I include#Set your optional CXXFLAGS
+
+CXXFLAGS=-O2 -isystem ${TOOLCHAIN}/lib/gcc/include --sysroot=${SYSROOT} -isystem ${SYSROOT}/usr/include -march=armv7-a -mthumb -std=c++0x -pedantic -isystem ${STL}/include -isystem ${STL}/libs/armeabi-v7a/include -L ${STL}/libs/armeabi-v7a -lgnustl_static
+
+.c.o: Makefile.template
+	${CC} -c $< ${CFLAGS} ${CFLAGSARB}
+
+.cpp.o:
+	${CXX} -c $< ${CXXFLAGSARB} ${CXXFLAGS}
